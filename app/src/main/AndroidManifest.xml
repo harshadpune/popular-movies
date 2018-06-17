@@ -19,7 +19,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MovieDescriptionActivity" />
+        <activity android:name=".MovieDescriptionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PopularMoviesActivity"/>
+        </activity>
     </application>
 
 </manifest>

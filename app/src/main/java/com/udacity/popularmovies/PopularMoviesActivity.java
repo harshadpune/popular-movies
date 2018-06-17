@@ -52,8 +52,8 @@ public class PopularMoviesActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(URL... urls) {
+            mDataBinding.pbLoading.setVisibility(View.VISIBLE);
             URL url = urls[0];
-            Log.d("PopularMoviesActivity", "----url "+url);
             String response = null;
             try {
                 response = NetworkUtils.getResponseFromUrl(url);
@@ -70,6 +70,7 @@ public class PopularMoviesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
+            mDataBinding.pbLoading.setVisibility(View.GONE);
             setAdapterAndListener(gridArrayAdapter);
         }
     }

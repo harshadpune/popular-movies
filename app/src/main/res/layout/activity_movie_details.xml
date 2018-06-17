@@ -4,47 +4,162 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<android.support.constraint.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/background_dark">
-
-
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        tools:text="Title"
-        android:textColor="@android:color/white"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_dark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tvOverview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/white"
-        tools:text="Overview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/margin_24_dp">
 
-    <TextView
-        android:id="@+id/tvReleaseDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvOverview"
-        tools:text="Release Date" />
-</android.support.constraint.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/ivPallet"
+                    android:layout_width="@dimen/margin_0_dp"
+                    android:layout_height="@dimen/margin_200_dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/ivMoviePhoto" />
 
+                <ImageView
+                    android:id="@+id/ivMoviePhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/margin_200_dp"
+                    android:layout_marginEnd="@dimen/margin_8_dp"
+                    android:layout_marginRight="@dimen/margin_8_dp"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.512"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="@dimen/margin_0_dp"
+                    android:layout_height="@dimen/height_60_dp"
+                    android:background="#80000000"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivPallet"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="@dimen/margin_0_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_24_dp"
+                    android:layout_marginLeft="@dimen/margin_24_dp"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView"
+                    tools:text="Title" />
+
+                <TextView
+                    android:id="@+id/tvReleaseDateTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_24_dp"
+                    android:layout_marginLeft="@dimen/margin_24_dp"
+                    android:layout_marginTop="@dimen/margin_24_dp"
+                    android:text="Release Date"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+                <TextView
+                    android:id="@+id/tvRatingLabel"
+                    android:layout_width="@dimen/margin_0_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_24_dp"
+                    android:layout_marginStart="@dimen/margin_24_dp"
+                    android:layout_marginTop="@dimen/margin_8_dp"
+                    android:text="Rating"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvReleaseDateTitle" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="@dimen/margin_0_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_16_dp"
+                    android:layout_marginLeft="@dimen/margin_24_dp"
+                    android:layout_marginRight="@dimen/margin_16_dp"
+                    android:layout_marginStart="@dimen/margin_24_dp"
+                    android:layout_marginTop="@dimen/margin_16_dp"
+                    android:text="@string/plot_synopsis"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRatingLabel" />
+
+                <TextView
+                    android:id="@+id/tvOverview"
+                    android:layout_width="@dimen/margin_0_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_16_dp"
+                    android:layout_marginLeft="@dimen/margin_24_dp"
+                    android:layout_marginRight="@dimen/margin_16_dp"
+                    android:layout_marginStart="@dimen/margin_24_dp"
+                    android:layout_marginTop="@dimen/margin_8_dp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3"
+                    tools:text="Description" />
+
+                <TextView
+                    android:id="@+id/tvReleaseDate"
+                    android:layout_width="@dimen/margin_0_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_16_dp"
+                    android:layout_marginStart="@dimen/margin_16_dp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tvReleaseDateTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvReleaseDateTitle"
+                    tools:text="Released On" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="@dimen/margin_0_dp"
+                    android:layout_height="@dimen/height_20_dp"
+                    android:layout_marginTop="@dimen/margin_8_dp"
+                    android:numStars="10"
+                    android:stepSize="0.1"
+                    app:layout_constraintStart_toStartOf="@+id/tvReleaseDate"
+                    app:layout_constraintTop_toBottomOf="@+id/tvReleaseDate" />
+
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="@dimen/margin_0_dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_16_dp"
+                    android:layout_marginLeft="@dimen/margin_8_dp"
+                    android:layout_marginRight="@dimen/margin_16_dp"
+                    android:layout_marginStart="@dimen/margin_8_dp"
+                    android:layout_marginTop="@dimen/margin_8_dp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ratingBar"
+                    app:layout_constraintTop_toBottomOf="@+id/tvReleaseDate"
+                    tools:text="10/10" />
+
+            </android.support.constraint.ConstraintLayout>
+
+
+    </ScrollView>
 </layout>

@@ -2,12 +2,11 @@ package com.udacity.popularmovies;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
-import android.util.Log;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.databinding.ActivityMovieDetailsBinding;
@@ -24,6 +23,10 @@ public class MovieDescriptionActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+        initComponents();
+    }
+
+    private void initComponents() {
         Bundle data = getIntent().getExtras();
         MoviesData moviesData = (MoviesData) data.getSerializable(AppConstants.MOVIE_POSITION);
         activityMovieDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
@@ -37,8 +40,8 @@ public class MovieDescriptionActivity extends AppCompatActivity{
         Palette.from(((BitmapDrawable)activityMovieDetailsBinding.ivMoviePhoto.getDrawable()).getBitmap()).generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(Palette palette) {
-                Log.d("MovieDescrptionActivity","-------Color "+palette.getVibrantColor(000000));
-                activityMovieDetailsBinding.ivPallet.setBackgroundColor(ColorUtils.setAlphaComponent(palette.getVibrantColor(0),128));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(palette.getVibrantColor(getResources().getColor(R.color.black))));
+                activityMovieDetailsBinding.ivPallet.setBackgroundColor(palette.getVibrantColor(getResources().getColor(R.color.black)));
             }
         });
     }

@@ -4,19 +4,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/background_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@id/pbLoading">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingBottom="@dimen/margin_24_dp">
+
 
                 <ImageView
                     android:id="@+id/ivPallet"
@@ -89,6 +91,48 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvReleaseDateTitle" />
 
                 <TextView
+                    android:id="@+id/tvVideosLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8_dp"
+                    android:layout_marginLeft="@dimen/margin_24_dp"
+                    android:layout_marginStart="@dimen/margin_24_dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvRatingLabel"
+                    android:text="@string/Trailers" />
+
+                <ProgressBar
+                    android:id="@+id/pbDetailsLoading"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toTopOf="@+id/rvMoviesList"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvVideosLabel"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvVideosList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_16_dp"
+                    android:orientation="vertical"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:layout_marginTop="@dimen/margin_8_dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvVideosLabel"
+                    android:nestedScrollingEnabled="false">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <TextView
                     android:id="@+id/textView3"
                     android:layout_width="@dimen/margin_0_dp"
                     android:layout_height="wrap_content"
@@ -103,7 +147,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.1"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvRatingLabel" />
+                    app:layout_constraintTop_toBottomOf="@+id/rvVideosList" />
 
                 <TextView
                     android:id="@+id/tvOverview"
@@ -161,5 +205,5 @@
             </android.support.constraint.ConstraintLayout>
 
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </layout>

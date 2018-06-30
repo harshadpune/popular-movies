@@ -17,11 +17,12 @@ public class JsonUtils {
         ArrayList<MoviesData> moviesArray = new ArrayList();
         for(int i=0; i< moviesResult.length(); i++){
             MoviesData moviesData = new MoviesData();
-            moviesData.setTitle(moviesResult.getJSONObject(i).optString(AppConstants.JSON_TITLE));
-            moviesData.setReleaseDate(moviesResult.getJSONObject(i).optString(AppConstants.JSON_RELEASE_DATE));
-            moviesData.setMoviePosterLink(moviesResult.getJSONObject(i).optString(AppConstants.JSON_POSTER_PATH));
-            moviesData.setVoteAverage(moviesResult.getJSONObject(i).optString(AppConstants.JSON_VOTE_AVERAGE));
-            moviesData.setPlotSynopsis(moviesResult.getJSONObject(i).optString(AppConstants.JSON_OVERVIEW));
+            moviesData.setId(moviesResult.optJSONObject(i).optString(AppConstants.JSON_ID));
+            moviesData.setTitle(moviesResult.optJSONObject(i).optString(AppConstants.JSON_TITLE));
+            moviesData.setReleaseDate(moviesResult.optJSONObject(i).optString(AppConstants.JSON_RELEASE_DATE));
+            moviesData.setMoviePosterLink(moviesResult.optJSONObject(i).optString(AppConstants.JSON_POSTER_PATH));
+            moviesData.setVoteAverage(moviesResult.optJSONObject(i).optString(AppConstants.JSON_VOTE_AVERAGE));
+            moviesData.setPlotSynopsis(moviesResult.optJSONObject(i).optString(AppConstants.JSON_OVERVIEW));
             moviesArray.add(moviesData);
         }
         return moviesArray;

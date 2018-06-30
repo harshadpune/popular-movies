@@ -10,12 +10,21 @@ class MoviesData implements Serializable {
 
 
 
+    private String id;
     private String title;
     private String releaseDate;
     private String moviePosterLink;
     private String voteAverage;
     private String plotSynopsis;
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

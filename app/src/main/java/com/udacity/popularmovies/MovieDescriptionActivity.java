@@ -7,14 +7,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.view.View;
 import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.databinding.ActivityMovieDetailsBinding;
+import com.udacity.popularmovies.utils.RetrofitAPIClient;
+import com.udacity.popularmovies.utils.RetrofitAPIInterface;
+import com.udacity.popularmovies.utils.VideoDataList;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by HARSHAD on 16/06/2018.
@@ -25,6 +34,7 @@ public class MovieDescriptionActivity extends AppCompatActivity{
     private ActivityMovieDetailsBinding activityMovieDetailsBinding;
     private final String SOURCE_DATE_FORMAT = "yyyy-mm-dd";
     private final String TARGET_DATE_FORMAT = "dd MMM yyyy";
+    private MoviesData moviesData;
 
 
     @Override
@@ -32,16 +42,20 @@ public class MovieDescriptionActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         initComponents();
+        loadVideos();
     }
+
+
 
     private void initComponents() {
         Bundle data = getIntent().getExtras();
-        MoviesData moviesData = null;
+        moviesData = null;
         if (data != null && data.containsKey((AppConstants.MOVIE_POSITION))) {
             moviesData = (MoviesData) data.getSerializable(AppConstants.MOVIE_POSITION);
         }
         if (moviesData != null) {
             activityMovieDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
+            activityMovieDetailsBinding.pbDetailsLoading.setVisibility(View.VISIBLE);
             Picasso.with(this).load(AppConstants.POSTER_BASE_URL + "" + moviesData.getMoviePosterLink()).into(activityMovieDetailsBinding.ivMoviePhoto, new Callback() {
                 @Override
                 public void onSuccess() {
@@ -71,6 +85,30 @@ public class MovieDescriptionActivity extends AppCompatActivity{
         }
     }
 
+    private void loadVideos() {
+        RetrofitAPIInterface retrofitAPIInterface = RetrofitAPIClient.getClient().create(RetrofitAPIInterface.class);
+
+
+        //Get video list
+        Call<VideoDataList> videoDataList = retrofitAPIInterface.getVideoList(moviesData.getId(),AppConstants.API_KEY);
+        videoDataList.enqueue(new retrofit2.Callback<VideoDataList>() {
+            @Override
+            public void onResponse(Call<VideoDataList> call, Response<VideoDataList> response) {
+                VideoDataList videoDataList =   response.body();
+                List<VideoDataList.VideoInformation> videoInformations = videoDataList.videoInformation;
+                VideosThumbnailAdapter videosThumbnailAdapter = new VideosThumbnailAdapter(MovieDescriptionActivity.this, videoInformations);
+                activityMovieDetailsBinding.pbDetailsLoading.setVisibility(View.GONE);
+                activityMovieDetailsBinding.rvVideosList.setAdapter(videosThumbnailAdapter );
+            }
+
+            @Override
+            public void onFailure(Call<VideoDataList> call, Throwable t) {
+                activityMovieDetailsBinding.pbDetailsLoading.setVisibility(View.GONE);
+                activityMovieDetailsBinding.tvVideosLabel.setVisibility(View.GONE);
+                activityMovieDetailsBinding.rvVideosList.setVisibility(View.GONE);
+            }
+        });
+    }
     private String formatDate(String releaseDate){
         SimpleDateFormat inputDate = new SimpleDateFormat(SOURCE_DATE_FORMAT);
         Date sourceDate = null;

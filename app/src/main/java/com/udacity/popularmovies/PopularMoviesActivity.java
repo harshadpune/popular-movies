@@ -1,16 +1,16 @@
 package com.udacity.popularmovies;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.udacity.popularmovies.databinding.ActivityPopularMoviesBinding;
 
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public class PopularMoviesActivity extends AppCompatActivity {
 
+    private static final int COLUMN_COUNT = 2;
     private ActivityPopularMoviesBinding mDataBinding;
     private Uri builtUri;
     private ArrayList<MoviesData> moviesData;
@@ -38,12 +39,14 @@ public class PopularMoviesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_popular_movies);
         mDataBinding = DataBindingUtil.setContentView(this,R.layout.activity_popular_movies);
         showPopularAndTopRatedMovies(INDEX_POPULAR_MOVIE);
+
+
     }
 
 
     public class PopularMoviesAsyncTask extends AsyncTask<URL, Void, String>{
 
-        private GridArrayAdapter gridArrayAdapter;
+        private MoviesRecyclerAdapter moviesRecyclerAdapter;
 
         @Override
         protected void onPreExecute() {
@@ -58,7 +61,7 @@ public class PopularMoviesActivity extends AppCompatActivity {
             try {
                 response = NetworkUtils.getResponseFromUrl(url);
                 moviesData = JsonUtils.parseNetworkResponse(response);
-                gridArrayAdapter = new GridArrayAdapter(PopularMoviesActivity.this,moviesData);
+                moviesRecyclerAdapter = new MoviesRecyclerAdapter(PopularMoviesActivity.this, moviesData);
             } catch (IOException e) {
                 e.printStackTrace();
             }catch (JSONException e){
@@ -71,20 +74,13 @@ public class PopularMoviesActivity extends AppCompatActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             mDataBinding.pbLoading.setVisibility(View.GONE);
-            setAdapterAndListener(gridArrayAdapter);
+            setAdapterAndListener(moviesRecyclerAdapter);
         }
     }
 
-    private void setAdapterAndListener(GridArrayAdapter gridArrayAdapter) {
-        mDataBinding.gvMoviesList.setAdapter(gridArrayAdapter);
-        mDataBinding.gvMoviesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent movieDescriptionIntent = new Intent(PopularMoviesActivity.this, MovieDescriptionActivity.class);
-                movieDescriptionIntent.putExtra(AppConstants.MOVIE_POSITION, moviesData.get(position));
-                startActivity(movieDescriptionIntent);
-            }
-        });
+    private void setAdapterAndListener(MoviesRecyclerAdapter moviesRecyclerAdapter) {
+        mDataBinding.rvMoviesList.setLayoutManager(new GridLayoutManager(this,COLUMN_COUNT));
+        mDataBinding.rvMoviesList.setAdapter(moviesRecyclerAdapter);
     }
 
 
@@ -104,6 +100,10 @@ public class PopularMoviesActivity extends AppCompatActivity {
             case R.id.filter_top_rated:
                 menuItem = (MenuItem) menu.findItem(R.id.filter_top_rated);
                 menuItem.setChecked(true);
+                break;
+
+            case R.id.menu_favorite:
+                Toast.makeText(this, "Favorites Clicked!!", Toast.LENGTH_SHORT).show(); //Todo Load favorites
                 break;
         }
         return true;

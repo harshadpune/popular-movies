@@ -12,7 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.udacity.popularmovies.dao.MoviesData;
 import com.udacity.popularmovies.databinding.ActivityPopularMoviesBinding;
+import com.udacity.popularmovies.utils.JsonUtils;
+import com.udacity.popularmovies.utils.NetworkUtils;
 
 import org.json.JSONException;
 
@@ -101,10 +104,6 @@ public class PopularMoviesActivity extends AppCompatActivity {
                 menuItem = (MenuItem) menu.findItem(R.id.filter_top_rated);
                 menuItem.setChecked(true);
                 break;
-
-            case R.id.menu_favorite:
-                Toast.makeText(this, "Favorites Clicked!!", Toast.LENGTH_SHORT).show(); //Todo Load favorites
-                break;
         }
         return true;
     }
@@ -119,6 +118,8 @@ public class PopularMoviesActivity extends AppCompatActivity {
             item.setChecked(true);
             selectedMenuItem = item.getItemId();
             showPopularAndTopRatedMovies(INDEX_TOP_RATED_MOVIE);
+        }else if(item.getItemId() == R.id.menu_favorite){
+            Toast.makeText(this, "Favorites Clicked!!", Toast.LENGTH_SHORT).show(); //Todo Load favorites
         }
         return true;
     }

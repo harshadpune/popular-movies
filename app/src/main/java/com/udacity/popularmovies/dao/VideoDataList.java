@@ -1,4 +1,4 @@
-package com.udacity.popularmovies.utils;
+package com.udacity.popularmovies.dao;
 
 import com.google.gson.annotations.SerializedName;
 

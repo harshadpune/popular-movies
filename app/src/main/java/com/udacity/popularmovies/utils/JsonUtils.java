@@ -1,4 +1,7 @@
-package com.udacity.popularmovies;
+package com.udacity.popularmovies.utils;
+
+import com.udacity.popularmovies.AppConstants;
+import com.udacity.popularmovies.dao.MoviesData;
 
 import org.json.JSONArray;
 import org.json.JSONException;

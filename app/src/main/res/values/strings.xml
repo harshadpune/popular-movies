@@ -10,4 +10,6 @@
     <string name="movie_error">Error loading data!</string>
     <string name="favorite">Favorite</string>
     <string name="Trailers">Trailers</string>
+    <string name="show_full_review"><![CDATA[<u>Read full review</u>]]></string>
+    <string name="reviews_label">Reviews</string>
 </resources>

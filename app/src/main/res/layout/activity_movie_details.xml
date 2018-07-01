@@ -121,8 +121,9 @@
                     android:id="@+id/rvVideosList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_16_dp"
-                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/margin_24_dp"
+                    android:layout_marginLeft="@dimen/margin_24_dp"
+                    android:orientation="horizontal"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                     android:layout_marginTop="@dimen/margin_8_dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -163,6 +164,35 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView3"
                     tools:text="Description" />
+
+                <TextView
+                    android:id="@+id/tvReviewLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reviews_label"
+                    android:layout_marginTop="@dimen/margin_8_dp"
+                    android:layout_marginLeft="@dimen/margin_24_dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOverview"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvReviewsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:layout_marginTop="@dimen/margin_8_dp"
+                    android:layout_marginLeft="@dimen/margin_24_dp"
+                    android:layout_marginRight="@dimen/margin_24_dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvReviewLabel">
+
+                </android.support.v7.widget.RecyclerView>
 
                 <TextView
                     android:id="@+id/tvReleaseDate"

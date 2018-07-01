@@ -1,4 +1,4 @@
-package com.udacity.popularmovies;
+package com.udacity.popularmovies.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

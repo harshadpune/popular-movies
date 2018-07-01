@@ -3,6 +3,7 @@ package com.udacity.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.udacity.popularmovies.utils.VideoDataList;
+import com.udacity.popularmovies.dao.VideoDataList;
 import java.util.List;
 
 /**
@@ -80,6 +81,7 @@ class VideosThumbnailAdapter extends RecyclerView.Adapter<VideosThumbnailAdapter
         private final ImageView ivVideoThumbnail;
         private final ProgressBar pbThumbnailLoading;
         private final ImageView ivPlayIcon;
+        private final ConstraintLayout clRowContainer;
 
         public ViewHolder(View view) {
             super(view);
@@ -89,12 +91,13 @@ class VideosThumbnailAdapter extends RecyclerView.Adapter<VideosThumbnailAdapter
             tvSite = (TextView) view.findViewById(R.id.tvSite);
             pbThumbnailLoading = (ProgressBar) view.findViewById(R.id.pbThumbnailLoading);
             ivPlayIcon = (ImageView) view.findViewById(R.id.ivPlayIcon);
-            ivVideoThumbnail.setOnClickListener(this);
+            clRowContainer = (ConstraintLayout) view.findViewById(R.id.clRowContainer);
+            clRowContainer.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if(v.getId() == R.id.ivVideoThumbnail){
+            if(v.getId() == R.id.clRowContainer){
                 Intent webIntent = new Intent(Intent.ACTION_VIEW,
                  Uri.parse(AppConstants.YOUTUBE_BASE_URL+""+videoInformations.get(getAdapterPosition()).key));
                  context.startActivity(webIntent);

@@ -1,4 +1,4 @@
-package com.udacity.popularmovies;
+package com.udacity.popularmovies.dao;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by HARSHAD on 16/06/2018.
  */
 
-class MoviesData implements Serializable {
+public class MoviesData implements Serializable {
 
 
 

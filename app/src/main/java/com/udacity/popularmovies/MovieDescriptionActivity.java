@@ -12,10 +12,12 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.udacity.popularmovies.dao.MoviesData;
+import com.udacity.popularmovies.dao.ReviewDataList;
 import com.udacity.popularmovies.databinding.ActivityMovieDetailsBinding;
 import com.udacity.popularmovies.utils.RetrofitAPIClient;
 import com.udacity.popularmovies.utils.RetrofitAPIInterface;
-import com.udacity.popularmovies.utils.VideoDataList;
+import com.udacity.popularmovies.dao.VideoDataList;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,7 +44,7 @@ public class MovieDescriptionActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         initComponents();
-        loadVideos();
+        loadVideosAndReviews();
     }
 
 
@@ -85,27 +87,48 @@ public class MovieDescriptionActivity extends AppCompatActivity{
         }
     }
 
-    private void loadVideos() {
+    private void loadVideosAndReviews() {
         RetrofitAPIInterface retrofitAPIInterface = RetrofitAPIClient.getClient().create(RetrofitAPIInterface.class);
-
-
         //Get video list
-        Call<VideoDataList> videoDataList = retrofitAPIInterface.getVideoList(moviesData.getId(),AppConstants.API_KEY);
+        final Call<VideoDataList> videoDataList = retrofitAPIInterface.getVideoList(moviesData.getId(),AppConstants.API_KEY);
         videoDataList.enqueue(new retrofit2.Callback<VideoDataList>() {
             @Override
             public void onResponse(Call<VideoDataList> call, Response<VideoDataList> response) {
                 VideoDataList videoDataList =   response.body();
                 List<VideoDataList.VideoInformation> videoInformations = videoDataList.videoInformation;
                 VideosThumbnailAdapter videosThumbnailAdapter = new VideosThumbnailAdapter(MovieDescriptionActivity.this, videoInformations);
-                activityMovieDetailsBinding.pbDetailsLoading.setVisibility(View.GONE);
                 activityMovieDetailsBinding.rvVideosList.setAdapter(videosThumbnailAdapter );
+                if(videoDataList.videoInformation.size() ==0)
+                    activityMovieDetailsBinding.tvVideosLabel.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<VideoDataList> call, Throwable t) {
-                activityMovieDetailsBinding.pbDetailsLoading.setVisibility(View.GONE);
                 activityMovieDetailsBinding.tvVideosLabel.setVisibility(View.GONE);
                 activityMovieDetailsBinding.rvVideosList.setVisibility(View.GONE);
+                videoDataList.cancel();
+            }
+        });
+
+        //GetVideoList
+        final Call<ReviewDataList> reviewDataList = retrofitAPIInterface.getReviewList(moviesData.getId(),AppConstants.API_KEY);
+        reviewDataList.enqueue(new retrofit2.Callback<ReviewDataList>() {
+            @Override
+            public void onResponse(Call<ReviewDataList> call, Response<ReviewDataList> response) {
+                ReviewDataList reviewDataList = response.body();
+                List<ReviewDataList.ReviewsInformation> reviewsInformations = reviewDataList.reviewsInformation;
+                ReviewsDataAdapter reviewsDataAdapter = new ReviewsDataAdapter(MovieDescriptionActivity.this, reviewsInformations);
+                activityMovieDetailsBinding.rvReviewsList.setAdapter(reviewsDataAdapter);
+                activityMovieDetailsBinding.pbDetailsLoading.setVisibility(View.GONE);
+                if(reviewDataList.reviewsInformation.size() ==0)
+                    activityMovieDetailsBinding.tvReviewLabel.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<ReviewDataList> call, Throwable t) {
+                activityMovieDetailsBinding.pbDetailsLoading.setVisibility(View.GONE);
+                activityMovieDetailsBinding.tvReviewLabel.setVisibility(View.GONE);
+                reviewDataList.cancel();
             }
         });
     }

@@ -1,5 +1,7 @@
 package com.udacity.popularmovies;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -9,12 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.widget.Toast;
-
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.udacity.popularmovies.dao.MoviesData;
 import com.udacity.popularmovies.dao.ReviewDataList;
+import com.udacity.popularmovies.database.AppDatabase;
 import com.udacity.popularmovies.databinding.ActivityMovieDetailsBinding;
+import com.udacity.popularmovies.utils.AppExcecutors;
 import com.udacity.popularmovies.utils.RetrofitAPIClient;
 import com.udacity.popularmovies.utils.RetrofitAPIInterface;
 import com.udacity.popularmovies.dao.VideoDataList;
@@ -31,12 +34,14 @@ import retrofit2.Response;
  * Created by HARSHAD on 16/06/2018.
  */
 
-public class MovieDescriptionActivity extends AppCompatActivity{
+public class MovieDescriptionActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityMovieDetailsBinding activityMovieDetailsBinding;
     private final String SOURCE_DATE_FORMAT = "yyyy-mm-dd";
     private final String TARGET_DATE_FORMAT = "dd MMM yyyy";
     private MoviesData moviesData;
+    private boolean isFavorite;
+    private AppDatabase mDb;
 
 
     @Override
@@ -44,6 +49,7 @@ public class MovieDescriptionActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         initComponents();
+        checkIfFavorite();
         loadVideosAndReviews();
     }
 
@@ -51,6 +57,7 @@ public class MovieDescriptionActivity extends AppCompatActivity{
 
     private void initComponents() {
         Bundle data = getIntent().getExtras();
+        mDb = AppDatabase.getInstance(this);
         moviesData = null;
         if (data != null && data.containsKey((AppConstants.MOVIE_POSITION))) {
             moviesData = (MoviesData) data.getSerializable(AppConstants.MOVIE_POSITION);
@@ -80,6 +87,7 @@ public class MovieDescriptionActivity extends AppCompatActivity{
             activityMovieDetailsBinding.tvReleaseDate.setText(formatDate(moviesData.getReleaseDate()));
             activityMovieDetailsBinding.tvRating.setText("" + moviesData.getVoteAverage() + "/10");
             activityMovieDetailsBinding.ratingBar.setRating(Float.parseFloat("" + moviesData.getVoteAverage()));
+            activityMovieDetailsBinding.ivFavorite.setOnClickListener(this);
 
         }else{
             Toast.makeText(this, ""+getString(R.string.movie_error), Toast.LENGTH_SHORT).show();
@@ -142,5 +150,53 @@ public class MovieDescriptionActivity extends AppCompatActivity{
         }
         SimpleDateFormat changedDate = new SimpleDateFormat(TARGET_DATE_FORMAT);
         return changedDate.format(sourceDate);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ivFavorite:
+                if(isFavorite){
+                    AppExcecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDb.moviesDao().deleteMovie(moviesData);
+                        }
+                    });
+                    activityMovieDetailsBinding.ivFavorite.setImageResource(R.drawable.star_unselected);
+                    isFavorite = false;
+                }else{
+
+                    AppExcecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDb.moviesDao().insertFavoriteMovie(moviesData);
+                        }
+                    });
+                    activityMovieDetailsBinding.ivFavorite.setImageResource(R.drawable.star_selected);
+                    isFavorite = true;
+                }
+
+                break;
+        }
+    }
+
+    private void checkIfFavorite() {
+        final LiveData<MoviesData> movieData = mDb.moviesDao().getMovieById(moviesData.getId());
+        movieData.observe(this, new Observer<MoviesData>() {
+            @Override
+            public void onChanged(@Nullable MoviesData moviesData) {
+                movieData.removeObserver(this);
+                if(moviesData !=null){
+                    isFavorite = true;
+                    activityMovieDetailsBinding.ivFavorite.setImageResource(R.drawable.star_selected);
+                }else{
+                    isFavorite = false;
+                    activityMovieDetailsBinding.ivFavorite.setImageResource(R.drawable.star_unselected);
+                }
+            }
+        });
+
     }
 }

@@ -1,16 +1,20 @@
 package com.udacity.popularmovies.dao;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
  * Created by HARSHAD on 16/06/2018.
  */
 
+@Entity (tableName = "movies")
 public class MoviesData implements Serializable {
 
-
-
-    private String id;
+    @PrimaryKey(autoGenerate = false)
+    @NonNull private String id;
     private String title;
     private String releaseDate;
     private String moviePosterLink;

@@ -232,6 +232,20 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvReleaseDate"
                     tools:text="10/10" />
 
+                <ImageView
+                    android:id="@+id/ivFavorite"
+                    android:layout_width="@dimen/height_40_dp"
+                    android:layout_height="@dimen/height_40_dp"
+                    android:layout_marginEnd="@dimen/margin_24_dp"
+                    android:layout_marginRight="@dimen/margin_24_dp"
+                    android:stepSize="1.0"
+                    android:src="@drawable/star_unselected"
+                    android:layout_marginTop="8dp"
+                    android:numStars="1"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
             </android.support.constraint.ConstraintLayout>
 
 

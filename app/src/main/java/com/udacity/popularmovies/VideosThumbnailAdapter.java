@@ -39,12 +39,9 @@ class VideosThumbnailAdapter extends RecyclerView.Adapter<VideosThumbnailAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
-        Log.d("Adapter", "--------------Binding View "+position);
         String url = null;
         try {
             url = "https://img.youtube.com/vi/"+videoInformations.get(position).key+"/0.jpg";
-            Log.d("Adapter", "--------------Binding Thumbnail "+url);
             Picasso.with(context).load(url).into(holder.ivVideoThumbnail, new Callback() {
                 @Override
                 public void onSuccess() {

@@ -41,17 +41,9 @@ class ReviewsDataAdapter extends RecyclerView.Adapter<ReviewsDataAdapter.ViewHol
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d("ReviewAdapter","------------Review "+position);
-        Log.d("ReviewAdapter","------------author "+reviewsInformations.get(position).author);
-        Log.d("ReviewAdapter","------------content "+reviewsInformations.get(position).content);
-        Log.d("ReviewAdapter","------------url "+reviewsInformations.get(position).url);
         holder.tvReview.setText(reviewsInformations.get(position).content);
         holder.tvAuthor.setText("-"+reviewsInformations.get(position).author);
         holder.tvShowFullReview.setText(Html.fromHtml(context.getResources().getString(R.string.show_full_review)));
-
-       /* holder.tvReview.setText("dsafadf");
-        holder.tvAuthor.setText("dadsdfs");
-        holder.tvShowFullReview.setText(Html.fromHtml(context.getResources().getString(R.string.show_full_review)));*/
     }
 
     @Override

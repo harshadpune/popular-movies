@@ -5,7 +5,7 @@
     <item
         android:id="@+id/menu_sort"
         android:title="@string/sort"
-        app:showAsAction="never">
+        app:showAsAction="always">
 
 
     <menu>
@@ -20,13 +20,15 @@
             android:id="@+id/filter_top_rated"
             android:title="@string/top_rated"
             app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/menu_favorite"
+                android:title="@string/favorite"
+                app:showAsAction="never"/>
         </group>
     </menu>
 
     </item>
 
-    <item
-        android:id="@+id/menu_favorite"
-        android:title="@string/favorite"/>
 
 </menu>

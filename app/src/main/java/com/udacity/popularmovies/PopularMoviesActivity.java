@@ -1,8 +1,11 @@
 package com.udacity.popularmovies;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,9 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
 import com.udacity.popularmovies.dao.MoviesData;
+import com.udacity.popularmovies.database.AppDatabase;
 import com.udacity.popularmovies.databinding.ActivityPopularMoviesBinding;
 import com.udacity.popularmovies.utils.JsonUtils;
 import com.udacity.popularmovies.utils.NetworkUtils;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PopularMoviesActivity extends AppCompatActivity {
 
@@ -34,6 +37,7 @@ public class PopularMoviesActivity extends AppCompatActivity {
     private final int INDEX_TOP_RATED_MOVIE = 1;
     private int selectedMenuItem = -1;
     MenuItem menuItem;
+    private AppDatabase mDb;
 
 
     @Override
@@ -41,9 +45,14 @@ public class PopularMoviesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popular_movies);
         mDataBinding = DataBindingUtil.setContentView(this,R.layout.activity_popular_movies);
+        initComponents();
         showPopularAndTopRatedMovies(INDEX_POPULAR_MOVIE);
 
 
+    }
+
+    private void initComponents() {
+        mDb = AppDatabase.getInstance(this);
     }
 
 
@@ -104,12 +113,17 @@ public class PopularMoviesActivity extends AppCompatActivity {
                 menuItem = (MenuItem) menu.findItem(R.id.filter_top_rated);
                 menuItem.setChecked(true);
                 break;
+
+            case R.id.menu_favorite:
+                menuItem = (MenuItem) menu.findItem(R.id.menu_favorite);
+                menuItem.setChecked(true);
+                break;
         }
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         if(item.getItemId() == R.id.filter_popular){
             item.setChecked(true);
             selectedMenuItem = item.getItemId();
@@ -119,7 +133,18 @@ public class PopularMoviesActivity extends AppCompatActivity {
             selectedMenuItem = item.getItemId();
             showPopularAndTopRatedMovies(INDEX_TOP_RATED_MOVIE);
         }else if(item.getItemId() == R.id.menu_favorite){
-            Toast.makeText(this, "Favorites Clicked!!", Toast.LENGTH_SHORT).show(); //Todo Load favorites
+            item.setChecked(true);
+            selectedMenuItem = item.getItemId();
+                    LiveData<List<MoviesData>> moviesData = mDb.moviesDao().loadAllMovies();
+                    moviesData.observe(this, new Observer<List<MoviesData>>() {
+                        @Override
+                        public void onChanged(@Nullable List<MoviesData> moviesData) {
+                            ArrayList<MoviesData> movieArray = new ArrayList<MoviesData>(moviesData);
+                            MoviesRecyclerAdapter moviesRecyclerAdapter = new MoviesRecyclerAdapter(PopularMoviesActivity.this, movieArray);
+                            if(selectedMenuItem == item.getItemId())
+                            setAdapterAndListener(moviesRecyclerAdapter);
+                        }
+                    });
         }
         return true;
     }
